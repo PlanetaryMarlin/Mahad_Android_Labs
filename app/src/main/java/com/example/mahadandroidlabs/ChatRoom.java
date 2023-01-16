@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.mahadandroidlabs.databinding.ActivityChatRoomBinding;
 import com.example.mahadandroidlabs.databinding.SentMessageBinding;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class ChatRoom extends AppCompatActivity {
@@ -47,6 +48,12 @@ public class ChatRoom extends AppCompatActivity {
             //clear previous text
             binding.textInput.setText("");
         });
+
+        binding.retrieveButton.setOnClickListener(click -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
+            String currentDateandTime = sdf.format(new Date());
+        });
+
 
 
 
