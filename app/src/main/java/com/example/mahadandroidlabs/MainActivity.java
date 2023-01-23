@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         variableBinding = ActivityMainBinding.inflate(getLayoutInflater());
+
         setContentView(variableBinding.getRoot());
         setContentView(R.layout.activity_main);
 
@@ -23,12 +24,11 @@ public class MainActivity extends AppCompatActivity {
         EditText myedit = variableBinding.myedittext;
         final Button btn = variableBinding.mybutton;
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                String editString = myedit.getText().toString();
-                mytext.setText( "Your edit text has: " + editString);
-            }
+        btn.setOnClickListener((View v) -> {
+            String editString = myedit.getText().toString();
+            mytext.setText("Your edit text has: " + editString);
         });
+
 
 
     }
