@@ -12,6 +12,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
         TextView mytext = findViewById(R.id.textview);
         EditText myedit = findViewById(R.id.myedittext);
         final Button btn = findViewById(R.id.mybutton);
@@ -23,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
     }
 }
