@@ -34,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
             variableBinding.myRadio.setChecked(selected);
         });
 
+        variableBinding.myCheck.setOnCheckedChangeListener((btn, isChecked) ->{});
+
+        variableBinding.mySwitch.setOnCheckedChangeListener((btn, isChecked) ->{});
+
+        variableBinding.myRadio.setOnCheckedChangeListener((btn, isChecked) ->{});
+
 
 
 
@@ -44,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Set the text on the text box.
         model.editString.observe(this, s -> {
-            variableBinding.textview.setText("Your edit text has " + s );
+            variableBinding.textview.setText("Your text is:  " + s );
 
         });
 
