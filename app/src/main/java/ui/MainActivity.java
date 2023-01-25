@@ -21,24 +21,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        variableBinding = ActivityMainBinding.inflate(getLayoutInflater());
 
         model = new ViewModelProvider(this).get(MainViewModel.class);
 
+        variableBinding = ActivityMainBinding.inflate(getLayoutInflater());
+
         setContentView(variableBinding.getRoot());
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
 
-        TextView mytext = variableBinding.textview;
-        EditText myedit = variableBinding.myedittext;
-        final Button btn = variableBinding.mybutton;
+        //TextView mytext = variableBinding.textview;
+       // EditText myedit = variableBinding.myedittext;
+       // final Button btn = variableBinding.mybutton;
 
-
-        variableBinding.textview.setText(model.editString);
-
+        // Saves the text when button is clicked. In the MainViewModel Class, to prevent deletion during turning the screen.
         variableBinding.mybutton.setOnClickListener(click -> {
             model.editString.postValue(variableBinding.myedittext.getText().toString());
-            variableBinding.textview.setText("Your Edit Text has: " + model.editString);
+        });
+
+        //Set the text on the text box.
+        model.editString.observe(this, s -> {
+            variableBinding.textview.setText("Your edit text has " + s );
+
         });
     }
+
 }
 
