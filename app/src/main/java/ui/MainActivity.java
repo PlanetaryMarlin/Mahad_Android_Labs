@@ -27,11 +27,15 @@ public class MainActivity extends AppCompatActivity {
         variableBinding = ActivityMainBinding.inflate(getLayoutInflater());
 
         setContentView(variableBinding.getRoot());
-        //setContentView(R.layout.activity_main);
 
-        //TextView mytext = variableBinding.textview;
-       // EditText myedit = variableBinding.myedittext;
-       // final Button btn = variableBinding.mybutton;
+        model.isSelected.observe(this, selected -> {
+            variableBinding.myCheck.setChecked(selected);
+            variableBinding.mySwitch.setChecked(selected);
+            variableBinding.myRadio.setChecked(selected);
+        });
+
+
+
 
         // Saves the text when button is clicked. In the MainViewModel Class, to prevent deletion during turning the screen.
         variableBinding.mybutton.setOnClickListener(click -> {
@@ -43,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
             variableBinding.textview.setText("Your edit text has " + s );
 
         });
+
+
     }
 
 }
