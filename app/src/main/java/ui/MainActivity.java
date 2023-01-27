@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.mahadandroidlabs.R;
@@ -28,18 +29,29 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(variableBinding.getRoot());
 
+
+        variableBinding.myCheck.setOnCheckedChangeListener((btn, isChecked) ->{
+            model.isSelected.postValue(isChecked);
+
+            Toast toast = Toast.makeText(MainActivity.this, "This is Toast Message", Toast.LENGTH_LONG);
+            toast.show();
+
+        });
+
+        variableBinding.mySwitch.setOnCheckedChangeListener((btn, isChecked) ->{
+            model.isSelected.postValue(isChecked);
+        });
+
+        variableBinding.myRadio.setOnCheckedChangeListener((btn, isChecked) ->{
+            model.isSelected.postValue(isChecked);
+        });
+
+
         model.isSelected.observe(this, selected -> {
             variableBinding.myCheck.setChecked(selected);
             variableBinding.mySwitch.setChecked(selected);
             variableBinding.myRadio.setChecked(selected);
         });
-
-        variableBinding.myCheck.setOnCheckedChangeListener((btn, isChecked) ->{});
-
-        variableBinding.mySwitch.setOnCheckedChangeListener((btn, isChecked) ->{});
-
-        variableBinding.myRadio.setOnCheckedChangeListener((btn, isChecked) ->{});
-
 
 
 
