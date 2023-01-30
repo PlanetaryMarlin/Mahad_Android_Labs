@@ -19,6 +19,7 @@ import com.example.mahadandroidlabs.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding variableBinding;
     private MainViewModel model;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,13 +47,17 @@ public class MainActivity extends AppCompatActivity {
             model.isSelected.postValue(isChecked);
         });
 
-
         model.isSelected.observe(this, selected -> {
             variableBinding.myCheck.setChecked(selected);
             variableBinding.mySwitch.setChecked(selected);
             variableBinding.myRadio.setChecked(selected);
         });
 
+        variableBinding.myimagebutton.setOnClickListener(click -> {
+            int width = variableBinding.myimagebutton.getWidth();
+            int height = variableBinding.myimagebutton.getHeight();
+            Toast toast = Toast.makeText(MainActivity.this, "The width = " + width + " and height = " + height, Toast.LENGTH_LONG);
+            toast.show();   });
 
 
         // Saves the text when button is clicked. In the MainViewModel Class, to prevent deletion during turning the screen.
