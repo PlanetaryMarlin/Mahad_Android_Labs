@@ -51,14 +51,14 @@
 
     <ImageButton
         android:id="@+id/myimagebutton"
-        android:layout_width="274dp"
-        android:layout_height="84dp"
+        android:layout_width="236dp"
+        android:layout_height="70dp"
         android:src="@drawable/logo_algonquin" />
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="289dp"
+        android:layout_height="120dp"
         android:src="@drawable/logo_algonquin" />
 
 
