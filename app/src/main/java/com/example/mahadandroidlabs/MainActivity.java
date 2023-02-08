@@ -1,8 +1,11 @@
 package com.example.mahadandroidlabs;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,7 +15,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.w( "MainActivity", "In onCreate() - Loading Widgets" );
 
-        //loginButton.setOnClickListener( clk-> { } );
+        Button loginButton = findViewById(R.id.loginButton);
+
+        loginButton.setOnClickListener( clk-> {
+            Intent nextPage = new Intent( MainActivity.this, SecondActivity.class);
+
+            startActivity(nextPage);
+        } );
+
+
     }
 
     @Override
