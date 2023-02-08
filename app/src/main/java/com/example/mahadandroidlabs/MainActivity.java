@@ -11,6 +11,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.w( "MainActivity", "In onCreate() - Loading Widgets" );
+
+        //loginButton.setOnClickListener( clk-> { } );
     }
 
     @Override
