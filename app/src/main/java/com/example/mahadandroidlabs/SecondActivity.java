@@ -19,7 +19,7 @@ public class SecondActivity extends AppCompatActivity {
 
         //Retrieve the data from the first page, and transform the text.
         String emailAddress = fromPrevious.getStringExtra("Email Address");
-        String message = ("Welcome Back" emailAddress;
+        String message = "Welcome Back" emailAddress;
 
 
 }
