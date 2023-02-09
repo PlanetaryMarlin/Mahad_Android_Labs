@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class SecondActivity extends AppCompatActivity {
 
@@ -23,13 +24,15 @@ public class SecondActivity extends AppCompatActivity {
 
         Button callButton = findViewById(R.id.callButton);
         EditText phoneNumberText = findViewById(R.id.phoneNumberText);
-        ImageView picture = findViewById(R.id.picture);
+        //ImageView picture = findViewById(R.id.picture);
+        TextView welcomeMessage = findViewById(R.id.welcomeMessage);
 
         Intent fromPrevious = getIntent();
 
         //Retrieve the data from the first page, and transform the text.
         String emailAddress = fromPrevious.getStringExtra("Email Address");
         String message = "Welcome Back" + emailAddress;
+
 
         callButton.setOnClickListener( clk-> {
             phoneNumberText.getText();
