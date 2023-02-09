@@ -5,9 +5,9 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -37,33 +37,37 @@ public class SecondActivity extends AppCompatActivity {
         String message = "Welcome Back" + emailAddress;
 
 
+        // Phone
         callButton.setOnClickListener( clk-> {
-            phoneNumberText.getText();
+
             Intent call = new Intent(Intent.ACTION_DIAL);
-            call.setData(Uri.parse("tel:" + phoneNumberText));
+            call.setData(Uri.parse("tel:" + phoneNumberText.getText()));
+            startActivity(call);
+
         });
 
+
+        // Picture
         picture.setOnClickListener( clk-> {
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        });
+            ActivityResultLauncher<Intent> cameraResult = registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult result) {
+                            if (result.getResultCode() == Activity.RESULT_OK) {
 
+                                Intent data = result.getData();
+                                Bitmap thumbnail = data.getParcelableExtra("data");
+                                picture.setImageBitmap(thumbnail);
 
-
-
-        ActivityResultLauncher<Intent> cameraResult = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-
-                            Intent data = result.getData();
+                            }
 
                         }
+                    });
+            cameraResult.launch(cameraIntent);
+        });
 
-                    }
-                });
 
         }
     }
-}
