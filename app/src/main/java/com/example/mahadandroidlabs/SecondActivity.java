@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.Button;
@@ -24,18 +25,22 @@ public class SecondActivity extends AppCompatActivity {
 
         Button callButton = findViewById(R.id.callButton);
         EditText phoneNumberText = findViewById(R.id.phoneNumberText);
-        //ImageView picture = findViewById(R.id.picture);
+        ImageView picture = findViewById(R.id.picture);
         TextView welcomeMessage = findViewById(R.id.welcomeMessage);
 
         Intent fromPrevious = getIntent();
 
         //Retrieve the data from the first page, and transform the text.
         String emailAddress = fromPrevious.getStringExtra("Email Address");
+
+        // Display User Email when they travel to next page
         String message = "Welcome Back" + emailAddress;
 
 
         callButton.setOnClickListener( clk-> {
             phoneNumberText.getText();
+            Intent call = new Intent(Intent.ACTION_DIAL);
+            call.setData(Uri.parse("tel:" + phoneNumberText));
         });
 
         picture.setOnClickListener( clk-> {
