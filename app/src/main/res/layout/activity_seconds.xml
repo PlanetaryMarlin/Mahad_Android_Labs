@@ -7,7 +7,7 @@
     tools:context=".SecondActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/callButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="84dp"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/picture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.888"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/callButton" />
 
     <TextView
         android:id="@+id/textView3"
@@ -39,13 +39,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextPhone"
+        android:id="@+id/phoneNumberText"
         android:layout_width="186dp"
         android:layout_height="48dp"
         android:layout_marginTop="84dp"
         android:ems="10"
         android:inputType="phone"
-        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/callButton"
         app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -58,6 +58,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.238"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPhone"
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumberText"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 </androidx.constraintlayout.widget.ConstraintLayout>
