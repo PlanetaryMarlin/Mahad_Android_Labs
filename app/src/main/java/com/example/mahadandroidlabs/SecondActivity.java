@@ -35,7 +35,7 @@ public class SecondActivity extends AppCompatActivity {
 
         // Display User Email when they travel to next page
         String message = "Welcome Back" + emailAddress;
-
+        welcomeMessage.setText(message);
 
         // Phone
         callButton.setOnClickListener( clk-> {
@@ -48,25 +48,23 @@ public class SecondActivity extends AppCompatActivity {
 
 
         // Picture
+        ActivityResultLauncher<Intent> cameraResult = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            Bitmap thumbnail = data.getParcelableExtra("data");
+                            picture.setImageBitmap(thumbnail);
+                        }
+                    }
+                });
         picture.setOnClickListener( clk-> {
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            ActivityResultLauncher<Intent> cameraResult = registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-                        @Override
-                        public void onActivityResult(ActivityResult result) {
-                            if (result.getResultCode() == Activity.RESULT_OK) {
-
-                                Intent data = result.getData();
-                                Bitmap thumbnail = data.getParcelableExtra("data");
-                                picture.setImageBitmap(thumbnail);
-
-                            }
-
-                        }
-                    });
             cameraResult.launch(cameraIntent);
         });
+
 
 
         }
