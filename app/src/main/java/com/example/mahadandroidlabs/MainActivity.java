@@ -2,7 +2,9 @@ package com.example.mahadandroidlabs;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -14,14 +16,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.w( "MainActivity", "In onCreate() - Loading Widgets" );
-
         Button loginButton = findViewById(R.id.loginButton);
         EditText emailEditText = findViewById(R.id.emailEditText);
+
+
+        SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+
+        String emailAddress = prefs.getString("LoginName", "");
+        emailEditText.setText(emailAddress);
+
+
+        Log.w( "MainActivity", "In onCreate() - Loading Widgets" );
+
+
+
 
         loginButton.setOnClickListener( clk-> {
             Intent nextPage = new Intent( MainActivity.this, SecondActivity.class);
             nextPage.putExtra( "Email Address", emailEditText.getText().toString() );
+            //Saves the email after the login button is pressed in the Shared Prefeerence folder.
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("LoginName",  emailEditText.getText().toString());
+            editor.apply();
             startActivity(nextPage);
         } );
 
