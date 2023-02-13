@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
             //Saves the email after the login button is pressed in the Shared Prefeerence folder.
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("LoginName",  emailEditText.getText().toString());
+            editor.putFloat("Hi" ,4.5f);
+            editor.putInt("Age", 26);
             editor.apply();
             startActivity(nextPage);
         } );

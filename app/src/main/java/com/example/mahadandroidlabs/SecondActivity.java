@@ -8,11 +8,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,12 +26,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class SecondActivity extends AppCompatActivity {
-
+    SharedPreferences prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seconds);
-
+        prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         Button changePicture = findViewById(R.id.changePicture);
         Button callButton = findViewById(R.id.callButton);
         EditText phoneNumberText = findViewById(R.id.phoneNumberText);
@@ -103,4 +105,13 @@ public class SecondActivity extends AppCompatActivity {
 
 
         }
+
+    @Override
+    protected void onPause() {
+        EditText phoneNumberText = findViewById(R.id.phoneNumberText);
+        super.onPause();
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("Phone Number",  phoneNumberText.getText().toString());
+        editor.apply();
+    }
     }
