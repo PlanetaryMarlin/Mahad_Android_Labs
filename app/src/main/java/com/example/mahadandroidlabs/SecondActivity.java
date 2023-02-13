@@ -6,8 +6,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,6 +18,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class SecondActivity extends AppCompatActivity {
 
     @Override
@@ -23,6 +30,7 @@ public class SecondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seconds);
 
+        Button changePicture = findViewById(R.id.changePicture);
         Button callButton = findViewById(R.id.callButton);
         EditText phoneNumberText = findViewById(R.id.phoneNumberText);
         ImageView picture = findViewById(R.id.picture);
@@ -46,6 +54,14 @@ public class SecondActivity extends AppCompatActivity {
 
         });
 
+        File file = new File( getFilesDir(), "Picture.png");
+
+        if(file.exists()) {
+            Bitmap theImage = BitmapFactory.decodeFile(file.getAbsolutePath());
+            picture.setImageBitmap( theImage );
+
+        }
+
 
         // Picture
         ActivityResultLauncher<Intent> cameraResult = registerForActivityResult(
@@ -57,10 +73,29 @@ public class SecondActivity extends AppCompatActivity {
                             Intent data = result.getData();
                             Bitmap thumbnail = data.getParcelableExtra("data");
                             picture.setImageBitmap(thumbnail);
+
+                            FileOutputStream fOut = null;
+
+                            try { fOut = openFileOutput("Picture.png", Context.MODE_PRIVATE);
+                                thumbnail.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                                fOut.flush();
+                                fOut.close();
+                            }
+
+                            catch (FileNotFoundException e)
+                            { e.printStackTrace();
+
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
+
+
+
+
                     }
                 });
-        picture.setOnClickListener( clk-> {
+        changePicture.setOnClickListener( clk-> {
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             cameraResult.launch(cameraIntent);
         });
