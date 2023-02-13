@@ -42,7 +42,7 @@ public class SecondActivity extends AppCompatActivity {
         String emailAddress = fromPrevious.getStringExtra("Email Address");
 
         // Display User Email when they travel to next page
-        String message = "Welcome Back" + emailAddress;
+        String message = "Welcome Back " + emailAddress;
         welcomeMessage.setText(message);
 
         // Phone
