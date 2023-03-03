@@ -8,9 +8,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+/**
+ * This page allows user to type in a password, and check how complex the password is through various functions.
+ * @version 1.0
+ * @author Mahad Mohamed
+ */
 public class MainActivity extends AppCompatActivity {
 
-    /**   This is a Javadoc comment */
+    /**   This holds the text at the center of the screen */
+    private TextView tv = null;
+    /** This hold the the edit box where the password is typed in*/
+    private EditText et = null;
+    /** This is the login button that confirms the editbox*/
+    private Button btn = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
