@@ -24,52 +24,74 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(clk -> {
             String password = et.getText().toString();
 
-            checkPasswordComplexity(password);
+            //checkPasswordComplexity(password);
 
+            if (checkPasswordComplexity(password) == true){
+                tv.setText("Your password meets the requirements");
+            }
+            else if (checkPasswordComplexity(password) == false) {
+                tv.setText("You Shall Not Pass!");
+            }
         });
     }
 
-        /**
-         * @param pw The String object that we are checking
-         * @return return true if password is complex.
-         */
-        boolean checkPasswordComplexity(String pw) {
-            boolean foundUpperCase, foundLowerCase, foundNumber, foundSpecial;
-            foundUpperCase = foundLowerCase = foundNumber = foundSpecial = false;
-
-            for
-                if(!foundUpperCase) {
-                    Toast.makeText(getApplicationContext(),"Missing Uppercase letter",Toast.LENGTH_SHORT).show();  ;// Say that they are missing an upper case letter;
-                    return false ;
-
-                }
-                else if( ! foundLowerCase) {
-                    Toast.makeText(getApplicationContext(),"Missing Lowercase letter",Toast.LENGTH_SHORT).show();  // Say that they are missing a lower case letter;
-                    return false;
-                }
-
-                else if( ! foundNumber) {
-                    Toast.makeText(getApplicationContext(),"Missing Number",Toast.LENGTH_SHORT).show();  // Say that they are missing a lower case letter;
-                    return false;
-                }
+    /**
+     * @param pw The String object that we are checking
+     * @return return true if password is complex enough.
+     */
+    boolean checkPasswordComplexity(String pw) {
+        boolean foundUpperCase, foundLowerCase, foundNumber, foundSpecial;
+        foundUpperCase = foundLowerCase = foundNumber = foundSpecial = false;
+        boolean complexEnough = true;
 
 
+        for (int i = 0; i <pw.length(); i++) {
+            char c = pw.charAt(i);
 
-                else
-                    return true;
+            if (Character.isUpperCase(c))
+                foundUpperCase = true;
+            else if (Character.isLowerCase(c)) {
+                foundLowerCase = true;
+            }
+            else if (Character.isDigit(c)) {
+                foundNumber = true;
+            }
 
-                boolean isSpecialCharacter(char c){
-                    switch (c) {
-                        case '#':
-                        case '?':
-                        case '*':
-                            return true;
-                        default:
-                            Toast.makeText(getApplicationContext(), "Missing Special Symbol", Toast.LENGTH_SHORT).show();  // Say that they are missing a lower case letter;
-                            return false;
+            /**
+             * Checks if the character is not a number, letter, or empty spaces. If's not any of this, then it's considered special.
+             */
+            else if (!Character.isDigit(c)&& !Character.isLetter(c)&& !Character.isWhitespace(c)) {
+                foundSpecial = true;
+            }
 
-                    }
-                }
+
         }
+
+        if(!foundUpperCase) {
+            Toast.makeText(this,"Missing Uppercase letter",Toast.LENGTH_SHORT).show();  ;// Say that they are missing an upper case letter;
+            return false ;
+
+        }
+        else if( ! foundLowerCase) {
+            Toast.makeText(this,"Missing Lowercase letter",Toast.LENGTH_SHORT).show();  // Say that they are missing a lower case letter;
+            return false;
+        }
+
+        else if( ! foundNumber) {
+            Toast.makeText(this,"Missing Number",Toast.LENGTH_SHORT).show();  // Say that they are missing a lower case letter;
+            return false;
+        }
+
+        else if( ! foundSpecial) {
+            Toast.makeText(this,"Missing Special",Toast.LENGTH_SHORT).show();  // Say that they are missing a lower case letter;
+            return false;
+        }
+
+
+        return complexEnough;
+
+
+    }
+
 
     }
