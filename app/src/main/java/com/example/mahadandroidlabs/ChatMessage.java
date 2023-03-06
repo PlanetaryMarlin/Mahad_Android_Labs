@@ -3,13 +3,13 @@ package com.example.mahadandroidlabs;
 public class ChatMessage {
     String message;
     String timeSent;
-    boolean isSentButton;
+    boolean isSend;
 
 
-    public ChatMessage(String message, String timeSent, boolean isSentButton) {
+    public ChatMessage (String message, String timeSent, boolean isSend) {
         this.message = message;
         this.timeSent = timeSent;
-        this.isSentButton = isSentButton;
+        this.isSend = isSend;
     }
 
 
@@ -21,8 +21,8 @@ public class ChatMessage {
         return timeSent;
     }
 
-    public boolean isSentButton() {
-        return isSentButton;
+    public boolean isSend() {
+        return isSend;
     }
 
 }

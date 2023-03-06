@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.mahadandroidlabs.databinding.ActivityChatRoomBinding;
+import com.example.mahadandroidlabs.databinding.ReceiveMessageBinding;
 import com.example.mahadandroidlabs.databinding.SentMessageBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ChatRoom extends AppCompatActivity {
 
@@ -34,15 +36,20 @@ public class ChatRoom extends AppCompatActivity {
         chatModel = new ViewModelProvider(this).get(ChatRoomViewModel.class);
         messages = chatModel.messages.getValue();
             if(messages == null) {
-                chatModel.messages.postValue( messages = new ArrayList<String>());
+                chatModel.messages.postValue( messages = new ArrayList<ChatMessage>());
             }
 
         binding.sendButton.setOnClickListener(click -> {
-            messages.add(binding.textInput.getText().toString());
+            String messageText = binding.textInput.getText().toString();
+            SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
+            String currentDateandTime = sdf.format(new Date());
+            ChatMessage message = new ChatMessage(messageText, currentDateandTime, true);
+            messages.add(message);
 
             //Noitfy when changes happens
             myAdapter.notifyItemInserted(messages.size()-1);
             myAdapter.notifyItemRemoved(messages.size()-1);
+            myAdapter.notifyDataSetChanged();
 
 
             //clear previous text
@@ -50,8 +57,14 @@ public class ChatRoom extends AppCompatActivity {
         });
 
         binding.retrieveButton.setOnClickListener(click -> {
+            String messageText = binding.textInput.getText().toString();
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
             String currentDateandTime = sdf.format(new Date());
+            ChatMessage message = new ChatMessage(messageText, currentDateandTime, false);
+            messages.add(message);
+            myAdapter.notifyItemInserted(messages.size()-1);
+            myAdapter.notifyDataSetChanged();
+            binding.textInput.setText("");
         });
 
 
@@ -65,6 +78,7 @@ public class ChatRoom extends AppCompatActivity {
                 super(itemView);
                 messageText = itemView.findViewById(R.id.messageText);
                 timeText = itemView.findViewById(R.id.timeText);
+
             }
         }
 
@@ -72,16 +86,24 @@ public class ChatRoom extends AppCompatActivity {
             @NonNull
             @Override
             public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                SentMessageBinding binding = SentMessageBinding.inflate(getLayoutInflater());
-                return new MyRowHolder(binding.getRoot());
+                if (viewType == 0) {
+                    SentMessageBinding binding = SentMessageBinding.inflate(getLayoutInflater());
+                    return new MyRowHolder(binding.getRoot());
+                } else {
+                    ReceiveMessageBinding binding = ReceiveMessageBinding.inflate(getLayoutInflater());
+                    return new MyRowHolder(binding.getRoot());
+                }
+
             }
 
+            //What are the text view set to.
             @Override
             public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
                 holder.messageText.setText("");
                 holder.timeText.setText("");
-                String obj = messages.get(position);
-                holder.messageText.setText(obj);
+                ChatMessage chatMessage = messages.get(position);
+                holder.messageText.setText(chatMessage.getMessage());
+                holder.timeText.setText(chatMessage.getTimeSent());
 
             }
 
@@ -91,7 +113,12 @@ public class ChatRoom extends AppCompatActivity {
             }
 
             public int getItemViewType(int position){
-                return 0;
+                ChatMessage message = messages.get(position);
+                if (message.isSend()) {
+                    return 0;
+                } else {
+                    return 1;
+                }
             }
         });
 
