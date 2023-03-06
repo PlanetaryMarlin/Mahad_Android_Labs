@@ -1,4 +1,4 @@
-package ui;
+package com.example.mahadandroidlabs;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
