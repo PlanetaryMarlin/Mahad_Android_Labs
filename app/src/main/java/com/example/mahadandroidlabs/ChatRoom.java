@@ -18,7 +18,8 @@ import com.example.mahadandroidlabs.databinding.SentMessageBinding;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
+//Notes:
+//Recycler View is list that can show a various number of elements, and the user can scroll through the elements:
 public class ChatRoom extends AppCompatActivity {
 
     ActivityChatRoomBinding binding;
@@ -85,6 +86,8 @@ public class ChatRoom extends AppCompatActivity {
         binding.recycleView.setAdapter(myAdapter=new RecyclerView.Adapter<MyRowHolder>() {
             @NonNull
             @Override
+            //It represents a single row in the list
+            //MyRowHolder is an object for representing everything that goes on a row in the list.
             public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 if (viewType == 0) {
                     SentMessageBinding binding = SentMessageBinding.inflate(getLayoutInflater());
@@ -97,6 +100,7 @@ public class ChatRoom extends AppCompatActivity {
             }
 
             //What are the text view set to.
+            //This initializes a ViewHolder to go at the row specified by the position parameter.
             @Override
             public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
                 holder.messageText.setText("");
