@@ -20,8 +20,10 @@ public class ChatRoom extends AppCompatActivity {
 
     ActivityChatRoomBinding binding;
     ChatRoomViewModel chatModel ;
-    private ArrayList<String> messages;
+    private ArrayList<ChatMessage> messages;
     private RecyclerView.Adapter myAdapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
