@@ -40,6 +40,9 @@ public class ChatRoom extends AppCompatActivity {
                 chatModel.messages.postValue( messages = new ArrayList<ChatMessage>());
             }
 
+
+
+
         binding.sendButton.setOnClickListener(click -> {
             String messageText = binding.textInput.getText().toString();
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
@@ -67,9 +70,6 @@ public class ChatRoom extends AppCompatActivity {
             myAdapter.notifyDataSetChanged();
             binding.textInput.setText("");
         });
-
-
-
 
 
         class MyRowHolder extends RecyclerView.ViewHolder {
