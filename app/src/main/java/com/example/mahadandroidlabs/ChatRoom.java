@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 //Notes:
 //Recycler View is list that can show a various number of elements, and the user can scroll through the elements:
@@ -33,15 +34,17 @@ public class ChatRoom extends AppCompatActivity {
     private RecyclerView.Adapter myAdapter;
 
 
-    MessageDatabase db = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "database-name").build();
-    ChatMessageDAO mDAO = db.cmDAO();
-    List<ChatMessage> allMessage = mDAO.getAllMessage();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         chatModel = new ViewModelProvider(this).get(ChatRoomViewModel.class);
+        MessageDatabase db = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "database-name").build();
+        ChatMessageDAO mDAO = db.cmDAO();
+
+
         messages = chatModel.messages.getValue();
             if(messages == null) {
                 chatModel.messages.postValue( messages = new ArrayList<ChatMessage>());
@@ -85,23 +88,25 @@ public class ChatRoom extends AppCompatActivity {
             public MyRowHolder(@NonNull View itemView) {
                 super(itemView);
 
-                itemView.setOnClickListener(click -> {
+                itemView.setOnClickListener(clk -> {
                     int position = getAbsoluteAdapterPosition();
                     AlertDialog.Builder builder = new AlertDialog.Builder(ChatRoom.this);
                     builder.setMessage("Do you want to delete the message: " + messageText.getText());
                         builder.setTitle("Question:");
                         builder.setNegativeButton("No", (dialog, cl) -> {});
-                        builder.setPositiveButton("No", (dialog, cl) -> {
+                        builder.setPositiveButton("Yes", (dialog, cl) -> {
                             ChatMessage m = messages.get(position);
-                            mDAO.deleteMessage(m);
                             messages.remove(position);
                             myAdapter.notifyItemRemoved(position);
 
                             Snackbar.make(messageText, "You Deleted Message # "+position, Snackbar.LENGTH_LONG)
-                                    .setAction("Undo", clk->{
+                                    .setAction("Undo", click->{
                                         messages.add(position, m);
+                                        myAdapter.notifyItemRemoved(position);
                                     })
                                     .show();
+
+
                         }).create().show();
                 });
 
