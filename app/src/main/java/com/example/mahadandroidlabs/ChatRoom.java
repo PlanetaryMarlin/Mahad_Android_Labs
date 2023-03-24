@@ -3,6 +3,8 @@ package com.example.mahadandroidlabs;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +46,13 @@ public class ChatRoom extends AppCompatActivity {
         MessageDatabase db = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "database-name").build();
         ChatMessageDAO mDAO = db.cmDAO();
 
+        chatModel.selectedMessage.observe(this, (newMessageValue) -> {
+            MessageDetailsFragment chatFragment = new MessageDetailsFragment(newMessageValue);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentLocation, chatFragment)
+                    .commit();
+
+        });
 
         messages = chatModel.messages.getValue();
             if(messages == null) {
@@ -90,6 +99,11 @@ public class ChatRoom extends AppCompatActivity {
 
                 itemView.setOnClickListener(clk -> {
                     int position = getAbsoluteAdapterPosition();
+                    ChatMessage selected = messages.get(position);
+
+                    chatModel.selectedMessage.postValue(selected);
+
+                   /*
                     AlertDialog.Builder builder = new AlertDialog.Builder(ChatRoom.this);
                     builder.setMessage("Do you want to delete the message: " + messageText.getText());
                         builder.setTitle("Question:");
@@ -107,7 +121,7 @@ public class ChatRoom extends AppCompatActivity {
                                     .show();
 
 
-                        }).create().show();
+                        }).create().show();*/
                 });
 
                 messageText = itemView.findViewById(R.id.messageText);
