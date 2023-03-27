@@ -55,7 +55,7 @@ public class ChatRoom extends AppCompatActivity {
         switch( item.getItemId() )
         {
             case R.id.item_1:
-
+//
 
                 break;
         }
