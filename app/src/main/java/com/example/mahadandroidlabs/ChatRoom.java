@@ -38,6 +38,9 @@ public class ChatRoom extends AppCompatActivity {
     private RecyclerView.Adapter myAdapter;
 
 
+    //The first code block is overriding the onCreateOptionsMenu() method to inflate a menu layout called my_menu into the menu object.
+    // The method returns true to indicate that the menu creation was successful.
+    //inflater is a class that is used to convert an XML layout file into a corresponding View object.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
