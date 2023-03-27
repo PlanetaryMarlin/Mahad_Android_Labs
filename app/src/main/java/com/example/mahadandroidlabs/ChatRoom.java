@@ -56,8 +56,7 @@ public class ChatRoom extends AppCompatActivity {
         {
             case R.id.item_1:
 
-                //put your ChatMessage deletion code here. If you select this item, you should show the alert dialog
-                //asking if the user wants to delete this message.
+
                 break;
         }
 
