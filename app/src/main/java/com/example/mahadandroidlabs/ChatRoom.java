@@ -10,12 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mahadandroidlabs.databinding.ActivityChatRoomBinding;
 import com.example.mahadandroidlabs.databinding.ReceiveMessageBinding;
@@ -55,11 +57,30 @@ public class ChatRoom extends AppCompatActivity {
         switch( item.getItemId() )
         {
             case R.id.item_1:
-//
+                try {
+                    ChatMessage message = chatModel.selectedMessage.getValue();
 
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ChatRoom.this);
+                    builder.setMessage("Do you want to delete the message: " + message.getMessage())
+                            .setTitle("Question: ")
+                            .setNegativeButton("No? ", (dialog, cl) -> {
+                            })
+                            .setPositiveButton("Yes? ", (dialog, cl) -> {
+                                messages.remove(message); // remove the selected message from the array list
+                                myAdapter.notifyItemRemoved((int) message.id);
+                            })
+                            .create().show();
+                } catch (NullPointerException e) {
+                    Toast.makeText(this, "Please select the message to delete", Toast.LENGTH_LONG).show();
+                }
+//            } catch(ArrayIndexOutOfBoundsException ae) {
+//                Toast.makeText(this,"Please select the message to delete",Toast.LENGTH_LONG ).show();
+//            }
                 break;
-        }
 
+
+        }
         return true;
     }
 
@@ -207,4 +228,5 @@ public class ChatRoom extends AppCompatActivity {
 
 
     }
+
 }
