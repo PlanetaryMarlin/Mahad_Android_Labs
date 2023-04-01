@@ -57,7 +57,7 @@ public class ChatRoom extends AppCompatActivity {
         switch( item.getItemId() )
         {
             case R.id.item_1:
-                try {
+
                     ChatMessage message = chatModel.selectedMessage.getValue();
 
 
@@ -67,17 +67,21 @@ public class ChatRoom extends AppCompatActivity {
                             .setNegativeButton("No? ", (dialog, cl) -> {
                             })
                             .setPositiveButton("Yes? ", (dialog, cl) -> {
-                                messages.remove(message); // remove the selected message from the array list
+                                messages.remove(message);
                                 myAdapter.notifyItemRemoved((int) message.id);
                             })
                             .create().show();
-                } catch (NullPointerException e) {
-                    Toast.makeText(this, "Please select the message to delete", Toast.LENGTH_LONG).show();
-                }
-//            } catch(ArrayIndexOutOfBoundsException ae) {
-//                Toast.makeText(this,"Please select the message to delete",Toast.LENGTH_LONG ).show();
-//            }
+
                 break;
+
+            case R.id.item_2:
+                Context context = getApplicationContext();
+                CharSequence text = "Version 1.0, created by Mahad Mohamed";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
 
 
         }
