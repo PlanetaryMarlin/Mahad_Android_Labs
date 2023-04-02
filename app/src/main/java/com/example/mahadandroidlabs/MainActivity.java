@@ -8,6 +8,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.mahadandroidlabs.databinding.ActivityMainBinding;
+
 
 /**
  * This page allows user to type in a password, and check how complex the password is through various functions.
@@ -16,34 +23,32 @@ import android.widget.Toast;
  */
 public class MainActivity extends AppCompatActivity {
 
-    /**   This holds the text at the center of the screen */
-    private TextView tv = null;
-    /** This hold the the edit box where the password is typed in*/
-    private EditText et = null;
-    /** This is the login button that confirms the editbox*/
-    private Button btn = null;
+    protected String cityName;
+    RequestQueue queue = null;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        TextView tv = findViewById(R.id.textView);
-        EditText et = findViewById(R.id.editText);
-        Button btn = findViewById(R.id.button);
+        ActivityMainBinding binding = ActivityMainBinding.inflate( getLayoutInflater() );
 
-        btn.setOnClickListener(clk -> {
-            String password = et.getText().toString();
+        //This part goes at the top of the onCreate function:
+        queue = Volley.newRequestQueue(this);
 
-            //checkPasswordComplexity(password);
 
-            if (checkPasswordComplexity(password) == true){
-                tv.setText("Your password meets the requirements");
-            }
-            else if (checkPasswordComplexity(password) == false) {
-                tv.setText("You Shall Not Pass!");
-            }
+        binding.getForecast.setOnClickListener(click -> {
+            cityName = binding.cityTextField.getText().toString();
+            String stringURL = "";
+
+            //this goes in the button click handler:
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, stringURL, null,
+                    (response) -> {   },
+                    (error) -> {   });
+            queue.add(request);
+
         });
     }
 
