@@ -30,17 +30,16 @@ public class MainActivity extends AppCompatActivity {
 
         queue = Volley.newRequestQueue(this);
         ActivityMainBinding binding = ActivityMainBinding.inflate( getLayoutInflater() );
-
+        setContentView(binding.getRoot());
         binding.getForecast.setOnClickListener(click -> {
             cityName = binding.cityTextField.getText().toString();
             String stringURL = null;
             try {
-                stringURL = "https://api.openweathermap.org/data/2.5/weather?q="
-                + URLEncoder.encode(cityName, "UTF-8")
-                + "&appid=a6cad38314bac12aa304fd6e5d6a7172&units=metric";
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
-            }
+                stringURL = new StringBuilder()
+                        .append ("https://api.openweathermap.org/data/2.5/weather?q=")
+                        .append (URLEncoder.encode(cityName, "UTF-8"))
+                        .append("&appid=a6cad38314bac12aa304fd6e5d6a7172&units=metric").toString();
+            } catch (UnsupportedEncodingException e) {e.printStackTrace();}
 
 
             //this goes in the button click handler:
