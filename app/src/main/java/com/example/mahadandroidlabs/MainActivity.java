@@ -15,33 +15,33 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mahadandroidlabs.databinding.ActivityMainBinding;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
-/**
- * This page allows user to type in a password, and check how complex the password is through various functions.
- * @version 1.0
- * @author Mahad Mohamed
- */
 public class MainActivity extends AppCompatActivity {
 
     protected String cityName;
     RequestQueue queue = null;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityMainBinding binding = ActivityMainBinding.inflate( getLayoutInflater() );
-
-        //This part goes at the top of the onCreate function:
         queue = Volley.newRequestQueue(this);
-
+        ActivityMainBinding binding = ActivityMainBinding.inflate( getLayoutInflater() );
 
         binding.getForecast.setOnClickListener(click -> {
             cityName = binding.cityTextField.getText().toString();
-            String stringURL = "";
+            String stringURL = null;
+            try {
+                stringURL = "https://api.openweathermap.org/data/2.5/weather?q="
+                + URLEncoder.encode(cityName, "UTF-8")
+                + "&appid=a6cad38314bac12aa304fd6e5d6a7172&units=metric";
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
+
 
             //this goes in the button click handler:
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, stringURL, null,
