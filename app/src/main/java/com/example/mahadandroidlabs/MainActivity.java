@@ -6,8 +6,10 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
     Bitmap image;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,42 +57,74 @@ public class MainActivity extends AppCompatActivity {
             //this goes in the button click handler:
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, stringURL, null,
                     (response) -> {
-                try {
-                    JSONObject coord = response.getJSONObject("coord");
-                    JSONArray weatherArray = response.getJSONArray("weather");
-                    JSONObject position0 = weatherArray.getJSONObject(0);
-                    String description = position0.getString("description");
-                    String iconName = position0.getString("icon");
-                    JSONObject mainObject = response.getJSONObject("main");
-                    double current = mainObject.getDouble("temp");
-                    double min = mainObject.getDouble("temp_min");
-                    double max = mainObject.getDouble("temp_max");
-                    int humidity = mainObject.getInt("humidity");
-                }
                         try {
-                            String pathname = getFilesDir() + "/" + iconName + ".png";
-                            File file = new File(pathname);
-                            if(file.exists()) {
-                                image = BitmapFactory.decodeFile(pathname);
+                            JSONObject coord = response.getJSONObject("coord");
+                            JSONArray weatherArray = response.getJSONArray("weather");
+                            JSONObject position0 = weatherArray.getJSONObject(0);
+                            String description = position0.getString("description");
+                            String iconName = position0.getString("icon");
+                            JSONObject mainObject = response.getJSONObject("main");
+                            double current = mainObject.getDouble("temp");
+                            double min = mainObject.getDouble("temp_min");
+                            double max = mainObject.getDouble("temp_max");
+                            int humidity = mainObject.getInt("humidity");
+
+
+                            runOnUiThread(() -> {
+                                binding.temp.setText("The current temperature is " + current);
+                                binding.temp.setVisibility(View.VISIBLE);
+                                binding.minTemp.setText("The min temperature is " + min);
+                                binding.minTemp.setVisibility(View.VISIBLE);
+                                binding.maxTemp.setText("The max temperature is " + max);
+                                binding.maxTemp.setVisibility(View.VISIBLE);
+                                binding.humidity.setText("The humidity is " + humidity + "%");
+                                binding.humidity.setVisibility(View.VISIBLE);
+                                binding.icon.setImageBitmap(image);
+                                binding.icon.setVisibility(View.VISIBLE);
+                                binding.description.setText(description);
+                                binding.description.setVisibility(View.VISIBLE);
+                            });
+
+                            try {
+                                String pathname = getFilesDir() + "/" + iconName + ".png";
+                                File file = new File(pathname);
+                                if (file.exists()) {
+                                    image = BitmapFactory.decodeFile(pathname);
+                                } else {
+                                    ImageRequest imgReq = new ImageRequest("https://openweathermap.org/img/img/w" +
+                                            iconName + ".png", new Response.Listener<Bitmap>() {
+                                        @Override
+                                        public void onResponse(Bitmap bitmap) {
+                                            try {
+                                                image = bitmap;
+                                                image.compress(Bitmap.CompressFormat.PNG, 100,
+                                                        MainActivity.this.openFileOutput(iconName + ".png", Activity.MODE_PRIVATE));
+                                                binding.icon.setImageBitmap(image);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }, 1024, 1024, ImageView.ScaleType.CENTER, null, (error) -> {
+                                        Toast.makeText(MainActivity.this, "" + error, Toast.LENGTH_SHORT).show();
+                                    });
+                                    queue.add(imgReq);
+                                }
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
                             }
-                            else {
-                                ImageRequest imgReq = new ImageRequest("https://openweathermap.org/img/img/w" + iconName + ".png", new Response.Listener<Bitmap>(){
-                                    @Override
-                                    public void onResponse(Bitmap bitmap) {
-                                        try{
-                                            image= bitmap;
-                                            image.compress(Bitmap.CompressFormat.PNG, 100,
-                                                    MainActivity.this.openFileOutput(iconName + ".png", Activity.MODE_PRIVATE));
-                                            binding.icon.setImageBitmap(image);
+
+
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
                         }
-                    }
                     },
                     (error) -> {   });
+
             queue.add(request);
 
         });
-    }
 
+    }
 
 
 
