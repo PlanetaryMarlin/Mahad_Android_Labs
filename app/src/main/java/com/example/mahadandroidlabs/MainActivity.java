@@ -2,6 +2,9 @@ package com.example.mahadandroidlabs;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,10 +14,16 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mahadandroidlabs.databinding.ActivityMainBinding;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -22,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
     protected String cityName;
     RequestQueue queue = null;
+
+    Bitmap image;
 
 
     @Override
@@ -44,70 +55,44 @@ public class MainActivity extends AppCompatActivity {
 
             //this goes in the button click handler:
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, stringURL, null,
-                    (response) -> {   },
+                    (response) -> {
+                try {
+                    JSONObject coord = response.getJSONObject("coord");
+                    JSONArray weatherArray = response.getJSONArray("weather");
+                    JSONObject position0 = weatherArray.getJSONObject(0);
+                    String description = position0.getString("description");
+                    String iconName = position0.getString("icon");
+                    JSONObject mainObject = response.getJSONObject("main");
+                    double current = mainObject.getDouble("temp");
+                    double min = mainObject.getDouble("temp_min");
+                    double max = mainObject.getDouble("temp_max");
+                    int humidity = mainObject.getInt("humidity");
+                }
+                        try {
+                            String pathname = getFilesDir() + "/" + iconName + ".png";
+                            File file = new File(pathname);
+                            if(file.exists()) {
+                                image = BitmapFactory.decodeFile(pathname);
+                            }
+                            else {
+                                ImageRequest imgReq = new ImageRequest("https://openweathermap.org/img/img/w" + iconName + ".png", new Response.Listener<Bitmap>(){
+                                    @Override
+                                    public void onResponse(Bitmap bitmap) {
+                                        try{
+                                            image= bitmap;
+                                            image.compress(Bitmap.CompressFormat.PNG, 100,
+                                                    MainActivity.this.openFileOutput(iconName + ".png", Activity.MODE_PRIVATE));
+                                            binding.icon.setImageBitmap(image);
+                        }
+                    }
+                    },
                     (error) -> {   });
             queue.add(request);
 
         });
     }
 
-    /**
-     * @param pw The String object that we are checking
-     * @return return true if password is complex enough.
-     */
-    boolean checkPasswordComplexity(String pw) {
-        boolean foundUpperCase, foundLowerCase, foundNumber, foundSpecial;
-        foundUpperCase = foundLowerCase = foundNumber = foundSpecial = false;
-        boolean complexEnough = true;
 
-
-        for (int i = 0; i <pw.length(); i++) {
-            char c = pw.charAt(i);
-
-            if (Character.isUpperCase(c))
-                foundUpperCase = true;
-            else if (Character.isLowerCase(c)) {
-                foundLowerCase = true;
-            }
-            else if (Character.isDigit(c)) {
-                foundNumber = true;
-            }
-
-            /**
-             * Checks if the character is not a number, letter, or empty spaces. If's not any of this, then it's considered special.
-             */
-            else if (!Character.isDigit(c)&& !Character.isLetter(c)&& !Character.isWhitespace(c)) {
-                foundSpecial = true;
-            }
-
-
-        }
-
-        if(!foundUpperCase) {
-            Toast.makeText(this,"Missing Uppercase letter",Toast.LENGTH_SHORT).show();  ;// Say that they are missing an upper case letter;
-            return false ;
-
-        }
-        else if( ! foundLowerCase) {
-            Toast.makeText(this,"Missing Lowercase letter",Toast.LENGTH_SHORT).show();  // Say that they are missing a lower case letter;
-            return false;
-        }
-
-        else if( ! foundNumber) {
-            Toast.makeText(this,"Missing Number",Toast.LENGTH_SHORT).show();  // Say that they are missing a lower case letter;
-            return false;
-        }
-
-        else if( ! foundSpecial) {
-            Toast.makeText(this,"Missing Special",Toast.LENGTH_SHORT).show();  // Say that they are missing a lower case letter;
-            return false;
-        }
-
-
-        return complexEnough;
-
-
-    }
 
 
     }
