@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (file.exists()) {
                                     image = BitmapFactory.decodeFile(pathname);
                                 } else {
-                                    ImageRequest imgReq = new ImageRequest("https://openweathermap.org/img/img/w" +
+                                    ImageRequest imgReq = new ImageRequest("https://openweathermap.org/img/w/" +
                                             iconName + ".png", new Response.Listener<Bitmap>() {
                                         @Override
                                         public void onResponse(Bitmap bitmap) {
