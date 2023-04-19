@@ -38,6 +38,7 @@ public class SecondActivity extends AppCompatActivity {
         ImageView picture = findViewById(R.id.picture);
         TextView welcomeMessage = findViewById(R.id.welcomeMessage);
 
+        //  Retrieve the text view to display
         Intent fromPrevious = getIntent();
 
         //Retrieve the data from the first page, and transform the text.
